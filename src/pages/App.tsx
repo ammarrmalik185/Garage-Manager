@@ -1,13 +1,20 @@
 import React from 'react';
 
-import {StyleSheet, View, Text, Platform} from 'react-native';
-import {NavigationContainer} from "@react-navigation/native";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {Platform} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 
-import Icon from "react-native-vector-icons/MaterialIcons";
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import BottomNavIcon from '../components/BottomNavIcon.tsx';
+import VehiclesPage from './VehiclesPage.tsx';
+import GaragePage from './GaragePage.tsx';
+import HomePage from './HomePage.tsx';
+import SettingsPage from './SettingsPage.tsx';
+import ProfilePage from './ProfilePage.tsx';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,9 +22,10 @@ function App() {
   return (
       <NavigationContainer>
         <Tab.Navigator
-            initialRouteName={"Home"}
+            initialRouteName={'Home'}
             screenOptions={{
               tabBarShowLabel: false,
+              headerShown : false,
               tabBarStyle: {
                 position: 'absolute',
                 bottom: 10,
@@ -25,13 +33,13 @@ function App() {
                 right: 10,
                 elevation: 10,
                 backgroundColor: '#ffffff',
-                borderRadius: 10,
+                borderRadius: 20,
                 height: 80,
                 ...Platform.select({
                   ios: {
                     shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 10 },
-                    shadowOpacity: 0.3,
+                    shadowOffset: { width: 10, height: 10 },
+                    shadowOpacity: 0.4,
                     shadowRadius: 20,
                   },
                   android: {
@@ -39,58 +47,14 @@ function App() {
                   },
                 }),
               },
-            }}
-        >
-            <Tab.Screen
-                name="Vehicles"
-                component={() => <Text>Vehicles</Text>}
-                options={{
-                    tabBarIcon: ({ focused }) => (<View>
-                        <Icon style={{alignSelf: "center"}} name="commute" color={ focused ? "green": "black" } size={ focused ? 25: 25 }/>
-                        {focused && <Text style={{color: "green", textAlign: "center"}}>Vehicles</Text>}
-                    </View>),
-                }}
-            />
-            <Tab.Screen
-                name="Garages"
-                component={() => <Text>Garages</Text>}
-                options={{
-                    tabBarIcon: ({ focused }) => (<View>
-                        <Icon style={{alignSelf: "center"}} name="warehouse" color={ focused ? "green": "black" } size={ focused ? 25: 25 }/>
-                        {focused && <Text style={{color: "green", textAlign: "center"}}>Garages</Text>}
-                    </View>),
-                }}
-            />
-            <Tab.Screen
-                name="Home"
-                component={() => <Text>Home</Text>}
-                options={{
-                    tabBarIcon: ({ focused }) => (<View>
-                        <Icon style={{alignSelf: "center"}} name="home" color={ focused ? "green": "black" } size={ focused ? 30: 30 }/>
-                        {focused && <Text style={{color: "green", textAlign: "center"}}>Home</Text>}
-                    </View>),
-                }}
-            />
-            <Tab.Screen
-                name="Settings"
-                component={() => <Text>Settings</Text>}
-                options={{
-                    tabBarIcon: ({ focused }) => (<View>
-                        <Icon style={{alignSelf: "center"}} name="settings" color={ focused ? "green": "black" } size={ focused ? 25: 25 }/>
-                        {focused && <Text style={{color: "green", textAlign: "center"}}>Settings</Text>}
-                    </View>),
-                }}
-            />
-            <Tab.Screen
-                name="Profile"
-                component={() => <Text>Profile</Text>}
-                options={{
-                    tabBarIcon: ({ focused }) => (<View>
-                        <Icon style={{alignSelf: "center"}} name="person" color={ focused ? "green": "black" } size={ focused ? 25: 25 }/>
-                        {focused && <Text style={{color: "green", textAlign: "center"}}>Profile</Text>}
-                    </View>),
-                }}
-            />
+            }}>
+
+            <Tab.Screen name="Vehicles" component={VehiclesPage} options={{tabBarIcon: ({ focused }) => <BottomNavIcon title={'Vehicles'} icon={'commute'} focused={focused}/>,}} />
+            <Tab.Screen name="Garages" component={GaragePage} options={{tabBarIcon: ({ focused }) => <BottomNavIcon title={'Garages'} icon={'warehouse'} focused={focused}/>}} />
+            <Tab.Screen name="Home" component={HomePage} options={{tabBarIcon: ({ focused }) => <BottomNavIcon title={'Home'} icon={'home'} focused={focused} size={35}/>}}/>
+            <Tab.Screen name="Settings" component={SettingsPage} options={{tabBarIcon: ({ focused }) => <BottomNavIcon title={'Settings'} icon={'settings'} focused={focused}/>}}/>
+            <Tab.Screen name="Profile" component={ProfilePage} options={{tabBarIcon: ({ focused }) => <BottomNavIcon title={'Profile'} icon={'person'} focused={focused}/>}}/>
+
         </Tab.Navigator>
       </NavigationContainer>
   );
